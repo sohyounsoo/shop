@@ -18,6 +18,7 @@ public class BoardBean
 	private Date board_date; 		// 글 작성일
 	private int board_parent;  // 부모글 번호
 	
+	
 	public int getBoard_parent() {
 		return board_parent;
 	}

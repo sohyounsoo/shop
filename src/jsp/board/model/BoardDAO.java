@@ -184,7 +184,7 @@ public class BoardDAO
                 sql.append("    ORDER SIBLINGS BY BOARD_RE_REF desc)");//. ORDER BY를 사용하면 정렬시 계층구조가 깨져버린다.            
                 sql.append(" data) ");
                 sql.append("WHERE rnum>=? and rnum<=?");
-           //글에 순번을 부여하는 rownum이 먼저 실행되고 이후 order by 절이 실행되면서 원하는 결과가 나오지 않게 된다. 
+           //글에 순번을 부여하는 rownum이 먼저 실행되고 이후 order by 절이 실행되면서 다른 결과가 나옴.
            //그래서 rownum과 order by를 같이 사용할 경우 서브쿼리로 order by 를 수행하여 정렬 시킨 후 rownum을 사용해야 한다.
                 
                 

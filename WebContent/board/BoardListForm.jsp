@@ -9,8 +9,13 @@
 		function writeForm(){
 			location.href="BoardWriteForm.bo";
 		}
-	</script>
+	</script>	
 	
+	<style type="text/css">
+	#wrap{
+		margin-bottom: 550px;
+	}
+	</style>
 </head>
 <body>
 <div id="wrap">
