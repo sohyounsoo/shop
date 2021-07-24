@@ -19,7 +19,7 @@
 			background-color:skyblue
 		}
 		.join{
-			margin-top: 1000px;
+			margin-top: 100px;
 		}
 		
 	</style>
@@ -69,9 +69,10 @@
 		function openIdChk(){
 			
 			window.name="parentForm";
-			window.open("member/IdCheckForm.jsp","chkForm",
+			window.open("IdCheckForm.jsp","chkForm",
 					 "width=500, height=300, resizable = no, scrollbars = no");
 		}
+		
 		function inputIdChk(){
             document.userInfo.idDuplication.value ="idUncheck";
         }
@@ -124,6 +125,7 @@
 					<td id="title">성별</td>
 					<td>
 						<input type="radio" name="gender" value="남" checked>남
+						<br><br>
 						<input type="radio" name="gender" value="여" >여
 					</td>
 				</tr>
