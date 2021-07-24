@@ -10,9 +10,9 @@ import jsp.member.model.MemberDAO;
 import jsp.member.model.MemberService;
 
 /** 
- *  È¸¿ø°¡ÀÔÀ» Ã³¸®ÇÏ´Â Action Å¬·¡½º<br>
- *  JoinForm.jsp¿¡¼­ ³Ñ°Ü¹ŞÀº Á¤º¸¸¦ ÀÌ¿ëÇÏ¿©
- *  È¸¿ø°¡ÀÔÀ» Ã³¸®ÇÑ´Ù.
+ *  íšŒì›ê°€ì…ì„ ì²˜ë¦¬í•˜ëŠ” Action í´ë˜ìŠ¤<br>
+ *  JoinForm.jspì—ì„œ ë„˜ê²¨ë°›ì€ ì •ë³´ë¥¼ ì´ìš©í•˜ì—¬
+ *  íšŒì›ê°€ì…ì„ ì²˜ë¦¬í•œë‹¤.
  */
 public class MemberJoinAction implements Action
 {
@@ -22,14 +22,14 @@ public class MemberJoinAction implements Action
 	public ActionForward execute(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
-		request.setCharacterEncoding("euc-kr"); // ÀÎÄÚµù
+		request.setCharacterEncoding("euc-kr"); // ì¸ì½”ë”©
 		
 		ActionForward forward = new ActionForward();
 		
 		
 		MemberService dao = MemberService.getInstance();
 		
-		// ÀÔ·ÂµÈ Á¤º¸¸¦ ÀÚ¹Ùºó¿¡ ¼¼ÆÃÇÑ´Ù.
+		// ì…ë ¥ëœ ì •ë³´ë¥¼ ìë°”ë¹ˆì— ì„¸íŒ…í•œë‹¤.
 		MemberBean member = new MemberBean();
 		member.setId(request.getParameter("id"));
 		member.setPassword(request.getParameter("password"));
@@ -43,14 +43,14 @@ public class MemberJoinAction implements Action
 		member.setPhone(request.getParameter("phone"));
 		member.setAddress(request.getParameter("address"));
 		
-		// È¸¿ø°¡ÀÔ ½ÇÇà
+		// íšŒì›ê°€ì… ì‹¤í–‰
 		dao.insertMember(member);
 		
-		// °¡ÀÔ¼º°ø
+		// ê°€ì…ì„±ê³µ
 		forward.setRedirect(true);
-   		forward.setNextPath("ResultForm.jsp");
+   		forward.setNextPath("MemberListForm.do");
 		
-   		// °¡ÀÔ¼º°ø ¸Ş½ÃÁö¸¦ ¼¼¼Ç¿¡ ´ã´Â´Ù.
+   		// ê°€ì…ì„±ê³µ ë©”ì‹œì§€ë¥¼ ì„¸ì…˜ì— ë‹´ëŠ”ë‹¤.
    		request.getSession().setAttribute("msg", "1");
    		
 		return forward;
