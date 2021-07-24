@@ -4,7 +4,7 @@
 
 <html>
 <head>
-	<title>±Û »ó¼¼º¸±â</title>
+	<title>ê¸€ ìƒì„¸ë³´ê¸°</title>
 	
 	<style type="text/css">
 		#wrap {
@@ -18,14 +18,14 @@
 		
 		#title{
 			height : 16;
-			font-family :'µ¸¿ò';
+			font-family :'ë‹ì›€';
 			font-size : 12;
 			text-align :center;
 			background-color: #F7F7F7;
 		}
 		
 		#btn{
-			font-family :'µ¸¿ò';
+			font-family :'ë‹ì›€';
 			font-size : 14;
 			text-align :center;
 		}
@@ -35,45 +35,24 @@
 	<script type="text/javascript">
 		function change(value)
 		{
-			if(value == 0)	//¸ñ·Ï
+			if(value == 0)	//ëª©ë¡
 				location.href='BoardListAction.bo?page=${pageNum}';
-			else if(value == 1)//´ä±Û
+			else if(value == 1)//ë‹µê¸€
 				location.href='BoardReplyFormAction.bo?num=${board.board_num}&page=${pageNum}';
-				//ÇöÀç °Ô½Ã±Û ¹øÈ£, ÆäÀÌÁö ¹øÈ£¸¦ °°ÀÌ Àü¼ÛÇÑ´Ù.
+				//í˜„ì¬ ê²Œì‹œê¸€ ë²ˆí˜¸, í˜ì´ì§€ ë²ˆí˜¸ë¥¼ ê°™ì´ ì „ì†¡í•œë‹¤.
 		}
 		
 		function doAction(value)
 		{
-			if(value == 0) // ¼öÁ¤
+			if(value == 0) // ìˆ˜ì •
 				location.href="BoardUpdateFormAction.bo?num=${board.board_num}&page=${pageNum}";
-			else if(value == 1) // »èÁ¦
+			else if(value == 1) // ì‚­ì œ
 				location.href="BoardDeleteAction.bo?num=${board.board_num}";
 		}
-		
-		//var httpRequest = null;
-		
-		// httpRequest °´Ã¼ »ı¼º
-		function getXMLHttpRequest(){ 
-			var httpRequest = null;
-		
-			if(window.ActiveXObject){
-				try{
-					httpRequest = new ActiveXObject("Msxml2.XMLHTTP");	
-				} catch(e) {
-					try{
-						httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
-					} catch (e2) { httpRequest = null; }
-				}
-			}
-			else if(window.XMLHttpRequest){
-				httpRequest = new window.XMLHttpRequest();
-			}
-			return httpRequest;	
-		}
-		
-		// ´ñ±Û µî·Ï
-		function writeCmt()
-		{
+					
+		//ëŒ“ê¸€ ë“±ë¡	
+		function writeCmt() {
+			
 			var form = document.getElementById("writeCommentForm");
 			
 			var board = form.comment_board.value
@@ -82,71 +61,75 @@
 			
 			if(!content)
 			{
-				alert("³»¿ëÀ» ÀÔ·ÂÇÏ¼¼¿ä.");
+				alert("ë‚´ìš©ì„ ì…ë ¥í•˜ì„¸ìš”.");
 				return false;
 			}
-			else
-			{	//¼­¹ö·Î Àü´ŞÇÏ´Â ÆÄ¶ó¹ÌÅÍ °ª
-				var param="comment_board="+board+"&comment_id="+id+"&comment_content="+content;
-					
-				httpRequest = getXMLHttpRequest();
-				httpRequest.onreadystatechange = checkFunc;
-				httpRequest.open("POST", "CommentWriteAction.co", true);	
-				httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=EUC-KR'); 
-				httpRequest.send(param);
-			}
+						
+			var param="comment_board="+board+"&comment_id="+id+"&comment_content="+content;
+			
+		    $.ajax({
+			    url : "CommentWriteAction.co",	
+				type : "post",
+				data : param,
+				success : function(data){		       
+					if(data == 1){						
+						location.reload(); // ìƒì„¸ë³´ê¸° ì°½ ìƒˆë¡œê³ ì¹¨
+					}
+		        },
+		        error : function(){
+		            alert("í†µì‹ ì‹¤íŒ¨");
+		        }  
+			})
 		}
 		
-		function checkFunc(){
-			if(httpRequest.readyState == 4){
-				// °á°ú°ªÀ» °¡Á®¿Â´Ù.
-				var resultText = httpRequest.responseText;
-				if(resultText == 1){ 
-					document.location.reload(); // »ó¼¼º¸±â Ã¢ »õ·Î°íÄ§
-				}
-			}
-		}
-		
-		// ´ñ±Û ´äº¯Ã¢
+		// ëŒ“ê¸€ ë‹µë³€ì°½
 		function cmReplyOpen(comment_num){
 			var userId = '${sessionScope.sessionID}';
 			
 			if(userId == "" || userId == null){
-				alert("·Î±×ÀÎÈÄ »ç¿ë°¡´ÉÇÕ´Ï´Ù.");
+				alert("ë¡œê·¸ì¸í›„ ì‚¬ìš©ê°€ëŠ¥í•©ë‹ˆë‹¤.");
 				return false;
 			}
 			else{
-				// ´ñ±Û ´äº¯Ã¢ open
+				// ëŒ“ê¸€ ë‹µë³€ì°½ open
 				window.name = "parentForm";
 				window.open("CommentReplyFormAction.co?num="+comment_num,
 							"replyForm", "width=570, height=350, resizable = no, scrollbars = no");
 			}
 		}
 		
-		// ´ñ±Û »èÁ¦Ã¢
+		// ëŒ“ê¸€ ì‚­ì œì°½
 		function cmDeleteOpen(comment_num){
-			var msg = confirm("´ñ±ÛÀ» »èÁ¦ÇÕ´Ï´Ù.");	
-			if(msg == true){ // È®ÀÎÀ» ´©¸¦°æ¿ì
+			var msg = confirm("ëŒ“ê¸€ì„ ì‚­ì œí•©ë‹ˆë‹¤.");	
+			if(msg == true){ // í™•ì¸ì„ ëˆ„ë¥¼ê²½ìš°
 				deleteCmt(comment_num)
 			}
 			else{
-				return false; // »èÁ¦Ãë¼Ò
+				return false; // ì‚­ì œì·¨ì†Œ
 			}
 		}
-	
-		// ´ñ±Û »èÁ¦
-		function deleteCmt(comment_num)
-		{
-			var param="comment_num="+comment_num;
+					
+		//ëŒ“ê¸€ ì‚­ì œ	
+		function deleteCmt(comment_num) {
 			
-			httpRequest = getXMLHttpRequest();
-			httpRequest.onreadystatechange = checkFunc;
-			httpRequest.open("POST", "CommentDeleteAction.co", true);	
-			httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=EUC-KR'); 
-			httpRequest.send(param);
+			var param="comment_num="+comment_num;
+											
+		    $.ajax({
+			    url : "CommentDeleteAction.co",	
+				type : "post",
+				data : param,
+				success : function(data){		       
+					if(data == 1){						
+						location.reload(); // ìƒì„¸ë³´ê¸° ì°½ ìƒˆë¡œê³ ì¹¨
+					}
+		        },
+		        error : function(){
+		            alert("í†µì‹ ì‹¤íŒ¨");
+		        }  
+			})
 		}
 		
-		// ´ñ±Û ¼öÁ¤Ã¢
+		// ëŒ“ê¸€ ìˆ˜ì •ì°½
 		function cmUpdateOpen(comment_num){
 			window.name = "parentForm";
 			window.open("CommentUpdateFormAction.co?num="+comment_num,
@@ -163,27 +146,27 @@
 		<table id="detailBoard" width="800" border="3" bordercolor="lightgray">
 		
 			<tr>
-				<td>ÀÛ¼ºÀÏ</td>
+				<td>ì‘ì„±ì¼</td>
 				<td>${board.board_date}</td>
 			</tr>
 			<tr>
-				<td>ÀÛ¼ºÀÚ</td>
+				<td>ì‘ì„±ì</td>
 				<td>${board.board_id}</td>
 			</tr>
 			<tr>
-				<td>Á¦ ¸ñ</td>
+				<td>ì œ ëª©</td>
 				<td>
 					${board.board_subject}
 				</td>		
 			</tr>
 			<tr>
-				<td>³» ¿ë</td>
+				<td>ë‚´ ìš©</td>
 				<td>
 					${board.board_content}
 				</td>		
 			</tr>
 			<tr>
-				<td>Ã·ºÎÆÄÀÏ</td>
+				<td>ì²¨ë¶€íŒŒì¼</td>
 				<td>
 					<a href='FileDownloadAction.bo?file_name=${board.board_file}'>${board.board_file}</a>
 				</td>	
@@ -193,30 +176,30 @@
 				<td colspan="5">
 				<c:if test="${sessionScope.sessionID !=null}">
 					<c:if test="${sessionScope.sessionID == board.board_id}">
-						<input type="button" value="¼öÁ¤" onclick="doAction(0)">
-						<input type="button" value="»èÁ¦" onclick="doAction(1)">
+						<input type="button" value="ìˆ˜ì •" onclick="doAction(0)">
+						<input type="button" value="ì‚­ì œ" onclick="doAction(1)">
 					</c:if>
-						<input type="button" value="´ä±Û" onclick="change(1)" >
+						<input type="button" value="ë‹µê¸€" onclick="change(1)" >
 				</c:if>		
-					<input type="button" value="¸ñ·Ï" onclick="change(0)">			
+					<input type="button" value="ëª©ë¡" onclick="change(0)">			
 				</td> <!-- javascript:location.href='BoardListAction.bo?page=${pageNum}' -->
 			</tr>
 		</table>
 	</div>
 	<br><br>
 	
-	<!-- ´ñ±Û ºÎºĞ -->
+	<!-- ëŒ“ê¸€ ë¶€ë¶„ -->
 	<div id="comment">
 		<table border="1" bordercolor="lightgray">
-	<!-- ´ñ±Û ¸ñ·Ï -->	
+	<!-- ëŒ“ê¸€ ëª©ë¡ -->	
 	<c:if test="${requestScope.commentList != null}">
 		<c:forEach var="comment" items="${requestScope.commentList}">
 			<tr>
-				<!-- ¾ÆÀÌµğ, ÀÛ¼º³¯Â¥ -->
+				<!-- ì•„ì´ë””, ì‘ì„±ë‚ ì§œ -->
 				<td width="150">
 					<div>
 						<c:if test="${comment.comment_level > 1}">
-							&nbsp;&nbsp; <!-- ´äº¯±ÛÀÏ°æ¿ì ¾ÆÀÌµğ ¾Õ¿¡ °ø¹éÀ» ÁØ´Ù. -->
+							&nbsp;&nbsp; <!-- ë‹µë³€ê¸€ì¼ê²½ìš° ì•„ì´ë”” ì•ì— ê³µë°±ì„ ì¤€ë‹¤. -->
 							RE:
 						</c:if>				
 						${comment.comment_id}<br>
@@ -224,20 +207,20 @@
 						<font size="2" color="lightgray">${comment.comment_date}</font>
 					</div>
 				</td>
-				<!-- º»¹®³»¿ë -->
+				<!-- ë³¸ë¬¸ë‚´ìš© -->
 				<td width="550">
 					<div class="text_wrapper">
 						${comment.comment_content}
 					</div>
 				</td>
-				<!-- ¹öÆ° -->
+				<!-- ë²„íŠ¼ -->
 				<td width="100">
 					<div id="btn" style="text-align:center;">
-						<a href="#" onclick="cmReplyOpen(${comment.comment_num})">[´äº¯]</a><br>
-					<!-- ´ñ±Û ÀÛ¼ºÀÚ¸¸ ¼öÁ¤, »èÁ¦ °¡´ÉÇÏµµ·Ï -->	
+						<a href="#" onclick="cmReplyOpen(${comment.comment_num})">[ë‹µë³€]</a><br>
+					<!-- ëŒ“ê¸€ ì‘ì„±ìë§Œ ìˆ˜ì •, ì‚­ì œ ê°€ëŠ¥í•˜ë„ë¡ -->	
 					<c:if test="${comment.comment_id == sessionScope.sessionID}">
-						<a href="#" onclick="cmUpdateOpen(${comment.comment_num})">[¼öÁ¤]</a><br>	
-						<a href="#" onclick="cmDeleteOpen(${comment.comment_num})">[»èÁ¦]</a>
+						<a href="#" onclick="cmUpdateOpen(${comment.comment_num})">[ìˆ˜ì •]</a><br>	
+						<a href="#" onclick="cmDeleteOpen(${comment.comment_num})">[ì‚­ì œ]</a>
 					</c:if>		
 					</div>
 				</td>
@@ -245,28 +228,28 @@
 		</c:forEach>
 	</c:if>
 			
-			<!-- ·Î±×ÀÎ ÇßÀ» °æ¿ì¸¸ ´ñ±Û ÀÛ¼º°¡´É -->
+			<!-- ë¡œê·¸ì¸ í–ˆì„ ê²½ìš°ë§Œ ëŒ“ê¸€ ì‘ì„±ê°€ëŠ¥ -->
 			<c:if test="${sessionScope.sessionID !=null}">
 			<tr bgcolor="#F5F5F5">
 			<form id="writeCommentForm">
 				<input type="hidden" name="comment_board" value="${board.board_num}">
 				<input type="hidden" name="comment_id" value="${sessionScope.sessionID}">
-				<!-- ¾ÆÀÌµğ-->
+				<!-- ì•„ì´ë””-->
 				<td width="150">
 					<div><font color="black">
 						${sessionScope.sessionID}</font>
 					</div>
 				</td>
-				<!-- º»¹® ÀÛ¼º-->
+				<!-- ë³¸ë¬¸ ì‘ì„±-->
 				<td width="550">
 					<div>
 						<textarea name="comment_content" rows="2" cols="70" ></textarea>
 					</div>
 				</td>
-				<!-- ´ñ±Û µî·Ï ¹öÆ° -->
+				<!-- ëŒ“ê¸€ ë“±ë¡ ë²„íŠ¼ -->
 				<td width="100">
-					<div id="btn" style="text-align:center;">
-						<p><a href="#" onclick="writeCmt()" ><font color="black">[´ñ±Ûµî·Ï]</font></a></p>	
+					<div id="btn" style="text-align:center;">					
+						<p><a href="#" id="insert" onclick="writeCmt()"><font color="black">[ëŒ“ê¸€ë“±ë¡]</font></a></p>	
 					</div>
 				</td>
 			</form>
